@@ -6,6 +6,9 @@
   </div>
 
   <div class="filter-toolbar">
+    <button mat-raised-button color="primary" class="create-btn" (click)="openCreateDialog()">
+      <mat-icon>add</mat-icon> CREATE VEHICLE
+    </button>
     <mat-form-field appearance="outline" class="compact-field">
       <mat-label>Status Filter</mat-label>
       <mat-select (selectionChange)="filterByStatus($event.value)">

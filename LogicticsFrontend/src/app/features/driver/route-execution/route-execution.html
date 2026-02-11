@@ -33,7 +33,7 @@
         <div class="stop-index">{{i + 1}}</div>
         <div class="stop-info">
           <div class="stop-name">{{stop.locationName}}</div>
-          <div class="stop-time">ETA: {{stop.expectedArrival | date:'shortTime'}}</div>
+          <div class="stop-time">ETA: {{stop.expectedArrival | date:'shortTime':'+0530'}}</div>
         </div>
         <div class="stop-btn-area">
           <button mat-flat-button color="primary" *ngIf="stop.status === 0" (click)="markArrived(stop.id)" class="small-btn">

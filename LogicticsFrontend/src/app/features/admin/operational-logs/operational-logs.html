@@ -45,7 +45,7 @@
       <ng-container matColumnDef="time">
         <mat-header-cell *matHeaderCellDef> Time </mat-header-cell>
         <mat-cell *matCellDef="let log"> 
-          <span class="time-text">{{log.eventTime | date:'shortTime'}}</span>
+          <span class="time-text">{{log.eventTime | date:'MMM d, h:mm a':'+0530'}}</span>
         </mat-cell>
       </ng-container>
 

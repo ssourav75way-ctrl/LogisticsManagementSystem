@@ -1,0 +1,51 @@
+
+<h2>Create New Vehicle</h2>
+<form [formGroup]="vehicleForm" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Vehicle Name</mat-label>
+    <input matInput formControlName="name" placeholder="V-1001">
+    <mat-error *ngIf="vehicleForm.get('name')?.hasError('required')">Name is required</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Type</mat-label>
+    <mat-select formControlName="vehicleType">
+      <mat-option value="Truck">Truck</mat-option>
+      <mat-option value="Van">Van</mat-option>
+      <mat-option value="Motorcycle">Motorcycle</mat-option>
+    </mat-select>
+    <mat-error *ngIf="vehicleForm.get('vehicleType')?.hasError('required')">Type is required</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Initial Status</mat-label>
+    <mat-select formControlName="status">
+      <mat-option value="Idle">Idle</mat-option>
+      <mat-option value="Maintenance">Maintenance</mat-option>
+      <mat-option value="Assigned">Assigned</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Location</mat-label>
+    <input matInput formControlName="location" placeholder="Warehouse A">
+  </mat-form-field>
+
+  <div class="actions">
+    <button mat-button type="button" (click)="onCancel()">Cancel</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="vehicleForm.invalid">Create</button>
+  </div>
+</form>
+
+<style>
+  .full-width {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+</style>

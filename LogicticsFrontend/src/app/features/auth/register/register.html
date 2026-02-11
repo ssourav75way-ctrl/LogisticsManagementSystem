@@ -1,11 +1,11 @@
-<div class="login-container">
-  <mat-card class="login-card">
+<div class="login-wrapper">
+  <mat-card class="login-box">
     <mat-card-header>
       <mat-card-title>Create Account</mat-card-title>
       <mat-card-subtitle>Join FleetTrack Logistics Network</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="login-form">
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Full Name</mat-label>
           <input matInput formControlName="name" placeholder="John Doe">
@@ -37,7 +37,7 @@
         </button>
       </form>
     </mat-card-content>
-    <mat-card-footer>
+    <mat-card-footer class="footer-note">
       <p>Already have an account? <a routerLink="/login">Sign in</a></p>
     </mat-card-footer>
   </mat-card>

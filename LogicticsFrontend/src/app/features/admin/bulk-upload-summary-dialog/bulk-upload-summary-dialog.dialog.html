@@ -34,7 +34,7 @@
           <td><strong>{{s.routeNumber}}</strong></td>
           <td>{{s.driverName}}</td>
           <td>{{s.vehicleNumber}}</td>
-          <td>{{s.startTime | date:'shortTime'}} - {{s.endTime | date:'shortTime'}}</td>
+          <td>{{s.startTime | date:'shortTime':'+0530'}} - {{s.endTime | date:'shortTime':'+0530'}}</td>
           <td><span class="status-badge">{{s.status}}</span></td>
         </tr>
       </tbody>

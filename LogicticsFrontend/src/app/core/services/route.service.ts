@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { Route, Stop } from '../models';
 
@@ -15,11 +16,55 @@ export class RouteService {
   constructor(private http: HttpClient) {}
 
   getRoutes(): Observable<Route[]> {
-    return this.http.get<Route[]>(this.apiUrl);
+    return this.http.get<Route[]>(this.apiUrl).pipe(
+      map((routes) =>
+        routes.map((route) => ({
+          ...route,
+          startTime:
+            route.startTime && !route.startTime.endsWith('Z')
+              ? route.startTime + 'Z'
+              : route.startTime,
+          endTime:
+            route.endTime && !route.endTime.endsWith('Z') ? route.endTime + 'Z' : route.endTime,
+          stops: route.stops?.map((stop) => ({
+            ...stop,
+            expectedArrival:
+              stop.expectedArrival && !stop.expectedArrival.endsWith('Z')
+                ? stop.expectedArrival + 'Z'
+                : stop.expectedArrival,
+            actualArrival:
+              stop.actualArrival && !stop.actualArrival.endsWith('Z')
+                ? stop.actualArrival + 'Z'
+                : stop.actualArrival,
+          })),
+        })),
+      ),
+    );
   }
 
   getRouteById(id: number): Observable<Route> {
-    return this.http.get<Route>(`${this.apiUrl}/${id}`);
+    return this.http.get<Route>(`${this.apiUrl}/${id}`).pipe(
+      map((route) => ({
+        ...route,
+        startTime:
+          route.startTime && !route.startTime.endsWith('Z')
+            ? route.startTime + 'Z'
+            : route.startTime,
+        endTime:
+          route.endTime && !route.endTime.endsWith('Z') ? route.endTime + 'Z' : route.endTime,
+        stops: route.stops?.map((stop) => ({
+          ...stop,
+          expectedArrival:
+            stop.expectedArrival && !stop.expectedArrival.endsWith('Z')
+              ? stop.expectedArrival + 'Z'
+              : stop.expectedArrival,
+          actualArrival:
+            stop.actualArrival && !stop.actualArrival.endsWith('Z')
+              ? stop.actualArrival + 'Z'
+              : stop.actualArrival,
+        })),
+      })),
+    );
   }
 
   createRoute(route: any): Observable<any> {

@@ -10,6 +10,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { VehicleService } from '../../../core/services/vehicle.service';
 import { AssignVehicleDialog } from '../assign-vehicle-dialog/assign-vehicle-dialog.dialog';
+import { CreateVehicleDialog } from '../create-vehicle-dialog/create-vehicle-dialog.dialog';
 import { Vehicle } from '../../../core/models';
 
 @Component({
@@ -66,6 +67,8 @@ export class VehicleMonitoringComponent implements OnInit {
         return 'status-idle';
       case 'Maintenance':
         return 'status-maintenance';
+      case 'Assigned':
+        return 'status-assigned';
       default:
         return '';
     }
@@ -75,6 +78,17 @@ export class VehicleMonitoringComponent implements OnInit {
     const dialogRef = this.dialog.open(AssignVehicleDialog, {
       width: '400px',
       data: { vehicle },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) this.loadVehicles();
+    });
+    }
+  
+
+  openCreateDialog() {
+    const dialogRef = this.dialog.open(CreateVehicleDialog, {
+      width: '400px',
     });
 
     dialogRef.afterClosed().subscribe((result) => {

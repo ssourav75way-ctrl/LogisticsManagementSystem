@@ -12,6 +12,18 @@
   .title-area h1 { margin: 0; font-size: 1.25rem; font-weight: bold; }
 }
 
+.filter-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  
+  .create-btn {
+    font-weight: 600;
+  }
+}
+
+
 
 
 .table-card {
