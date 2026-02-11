@@ -1,0 +1,45 @@
+.sidebar {
+  width: 180px;
+  height: 100%;
+  background: #f8f9fa;
+  border-right: 1px solid #ccc;
+  padding-top: 0.5rem;
+}
+
+.nav-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  color: #444;
+  font-size: 0.85rem;
+  border-bottom: 1px solid transparent;
+
+  mat-icon {
+    font-size: 1.1rem;
+    width: 1.1rem;
+    height: 1.1rem;
+    color: #777;
+  }
+
+  &:hover {
+    background: #e9ecef;
+  }
+
+  &.active {
+    background: #fff;
+    color: #004085;
+    border-left: 3px solid #004085;
+    font-weight: bold;
+
+    mat-icon {
+      color: #004085;
+    }
+  }
+}

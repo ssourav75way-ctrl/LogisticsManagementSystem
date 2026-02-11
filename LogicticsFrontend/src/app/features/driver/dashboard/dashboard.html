@@ -1,0 +1,51 @@
+<div class="page-container">
+  <div class="header-row">
+    <h1>Assigned Routes</h1>
+    <button mat-stroked-button color="primary" class="small-btn" (click)="ngOnInit()">REFRESH</button>
+  </div>
+
+  <div class="route-grid" *ngIf="assignedRoutes.length > 0; else noRoutes">
+    <mat-card *ngFor="let route of assignedRoutes" class="route-card">
+      <div class="card-edge" [attr.data-status]="route.status"></div>
+      <mat-card-header>
+        <div class="header-main">
+          <mat-card-title>{{route.routeNumber}}</mat-card-title>
+          <span class="status-chip" [attr.data-status]="route.status">
+            {{getStatusLabel(route.status)}}
+          </span>
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="route-details">
+          <div class="detail-item">
+            <mat-icon>local_shipping</mat-icon>
+            <span>{{route.vehicle?.name || 'N/A'}}</span>
+          </div>
+          <div class="detail-item">
+            <mat-icon>location_on</mat-icon>
+            <span>{{route.stops?.length || 0}} Delivery Points</span>
+          </div>
+          <div class="detail-item">
+            <mat-icon>schedule</mat-icon>
+            <span>Starts: {{route.startTime | date:'MMM d, h:mm a'}}</span>
+          </div>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-flat-button color="primary" [routerLink]="['/driver/execution', route.id]" class="full-width-btn">
+          {{ route.status === 2 ? 'CONTINUE EXECUTION' : 'OPEN ROUTE' }}
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
+
+<ng-template #noRoutes>
+  <div class="empty-state">
+    <div class="empty-icon-wrap">
+      <mat-icon>assignment_turned_in</mat-icon>
+    </div>
+    <p>All caught up! No active routes assigned to you at the moment.</p>
+    <button mat-stroked-button color="primary" (click)="ngOnInit()">REFRESH TASKS</button>
+  </div>
+</ng-template>

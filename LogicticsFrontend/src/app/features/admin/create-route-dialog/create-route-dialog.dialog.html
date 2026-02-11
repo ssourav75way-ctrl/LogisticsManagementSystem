@@ -1,0 +1,90 @@
+<h2 mat-dialog-title>Create New Delivery Route</h2>
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <div class="form-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Route Number</mat-label>
+        <input matInput formControlName="routeNumber" placeholder="R-1001" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Distance (km)</mat-label>
+        <input matInput type="number" formControlName="estimatedDistance" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Assign Vehicle</mat-label>
+        <mat-select formControlName="vehicleId">
+          <mat-option *ngFor="let v of vehicles" [value]="v.id">
+            {{ v.name }} ({{ v.status }})
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Driver ID</mat-label>
+        <input
+          matInput
+          type="number"
+          formControlName="driverId"
+          placeholder="Enter Driver ID"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Start Time</mat-label>
+        <input matInput [matDatepicker]="picker1" formControlName="startTime" />
+        <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Estimated End Time</mat-label>
+        <input matInput [matDatepicker]="picker2" formControlName="endTime" />
+        <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <mat-divider style="margin: 1rem 0"></mat-divider>
+    <div class="stops-section">
+      <div class="stops-header">
+        <h3>Stops</h3>
+        <button mat-stroked-button color="primary" type="button" (click)="addStop()">
+          <mat-icon>add_location</mat-icon> Add Stop
+        </button>
+      </div>
+
+      <div formArrayName="stops" class="stops-list">
+        <div
+          *ngFor="let stop of stops.controls; let i = index"
+          [formGroupName]="i"
+          class="stop-item"
+        >
+          <div class="stop-number">{{ i + 1 }}</div>
+          <mat-form-field appearance="outline" class="flex-grow">
+            <mat-label>Location Name</mat-label>
+            <input matInput formControlName="locationName" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Expected Arrival</mat-label>
+            <input matInput [matDatepicker]="stopPicker" formControlName="expectedArrival" />
+            <mat-datepicker-toggle matIconSuffix [for]="stopPicker"></mat-datepicker-toggle>
+            <mat-datepicker #stopPicker></mat-datepicker>
+          </mat-form-field>
+
+          <button mat-icon-button color="warn" type="button" (click)="removeStop(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSave()" [disabled]="form.invalid">
+    Create Route
+  </button>
+</mat-dialog-actions>

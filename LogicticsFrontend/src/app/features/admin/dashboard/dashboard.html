@@ -1,0 +1,87 @@
+<div class="dashboard-wrap">
+  <div class="header-section">
+    <h1>Operational Overview</h1>
+    <p>Real-time fleet status and alerts</p>
+  </div>
+
+  <div class="stats-container">
+    <div class="stat-box">
+      <mat-icon class="blue-icon">local_shipping</mat-icon>
+      <div class="stat-content">
+        <span class="count">{{stats.totalVehicles}}</span>
+        <span class="label">Total Vehicles</span>
+      </div>
+    </div>
+
+    <div class="stat-box">
+      <mat-icon class="green-icon">route</mat-icon>
+      <div class="stat-content">
+        <span class="count">{{stats.activeRoutes}}</span>
+        <span class="label">Routes In Transit</span>
+      </div>
+    </div>
+
+    <div class="stat-box">
+      <mat-icon class="orange-icon">warning</mat-icon>
+      <div class="stat-content">
+        <span class="count">{{stats.alerts}}</span>
+        <span class="label">Active Alerts</span>
+      </div>
+    </div>
+
+    <div class="stat-box">
+      <mat-icon class="purple-icon">task_alt</mat-icon>
+      <div class="stat-content">
+        <span class="count">{{stats.completedToday}}</span>
+        <span class="label">Completed Today</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+    <!-- Vehicles Requiring Attention (NEW) -->
+    <mat-card class="attention-card">
+      <mat-card-header>
+        <mat-card-title>Vehicles Requiring Attention</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="attention-list">
+          <div class="attention-item" *ngFor="let v of attentionVehicles">
+            <div class="v-info">
+              <span class="v-name">{{v.name}}</span>
+              <span class="v-type">{{v.vehicleType}}</span>
+            </div>
+            <span class="v-status" [class.transit]="v.status === 'In Transit'" [class.maintenance]="v.status === 'Maintenance'">
+              {{v.status}}
+            </span>
+          </div>
+          <div *ngIf="attentionVehicles.length === 0" class="empty-msg">
+            No vehicles currently require attention.
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="activity-card">
+      <mat-card-header>
+        <mat-card-title>Recent Activities</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="activity-list">
+          <div class="activity-item" *ngFor="let log of recentLogs">
+            <div class="activity-icon" [class.warn]="log.eventType === 4">
+              <mat-icon>{{log.eventType === 4 ? 'error' : 'notifications'}}</mat-icon>
+            </div>
+            <div class="activity-details">
+              <p class="desc">{{log.description}}</p>
+              <span class="time">{{log.eventTime | date:'shortTime'}}</span>
+            </div>
+          </div>
+          <div *ngIf="recentLogs.length === 0" class="empty-list">
+            No recent activity recorded.
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

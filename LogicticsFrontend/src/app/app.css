@@ -1,0 +1,102 @@
+/* Global Theme Variables */
+:root {
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --accent: #e11d48;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --border-color: #eef2f6;
+  --bg-main: #f8fafc;
+  
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+/* Base Resets */
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--text-main);
+  background-color: var(--bg-main);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  color: var(--text-main);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Glassmorphism utility */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Material Component Overrides for Premium Look */
+.mat-mdc-card {
+  border-radius: 16px !important;
+  box-shadow: var(--shadow-sm) !important;
+  border: 1px solid var(--border-color) !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+  overflow: hidden;
+}
+
+.mat-mdc-button, .mat-mdc-raised-button {
+  border-radius: 10px !important;
+  text-transform: none !important;
+  font-weight: 600 !important;
+  letter-spacing: normal !important;
+}
+
+.mat-mdc-form-field {
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing {
+    border-color: #e2e8f0 !important;
+  }
+}
+
+.mat-mdc-table {
+  background: transparent !important;
+}
+
+.mat-mdc-header-cell {
+  color: var(--text-muted) !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  font-size: 0.75rem !important;
+  letter-spacing: 0.05em !important;
+  background: transparent !important;
+}
+
+.mat-mdc-row {
+  background: white !important;
+  transition: background 0.2s ease;
+  
+  &:hover {
+    background: #f8fafc !important;
+  }
+}
+
+.mat-mdc-cell {
+  color: var(--text-main) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}

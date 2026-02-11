@@ -1,0 +1,50 @@
+.page-container {
+  padding: 1rem;
+  background-color: #f1f3f2;
+  min-height: 100%;
+}
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  
+  .title-area h1 { 
+    margin: 0; 
+    font-size: 1.25rem; 
+    font-weight: bold;
+  }
+}
+
+
+
+.table-card {
+  padding: 0 !important;
+  border: 1px solid #ccc !important;
+}
+
+.event-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.8rem;
+  font-weight: bold;
+  
+  mat-icon { font-size: 16px; width: 16px; height: 16px; color: #444; }
+  &[data-type="4"] { color: #b71c1c; mat-icon { color: #b71c1c; } }
+}
+
+.issue-row {
+  background-color: #ffebee !important;
+}
+
+.info-text {
+  font-size: 0.8rem;
+  color: #333;
+}
+
+.time-text {
+  color: #666;
+  font-size: 0.8rem;
+}

@@ -1,0 +1,71 @@
+.page-container {
+  padding: 1.5rem;
+  background-color: #f4f6f9;
+  min-height: 100%;
+}
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  
+  .title-area {
+    h1 { margin: 0; font-size: 1.5rem; color: #333; }
+    p { margin: 0; color: #777; font-size: 0.9rem; }
+  }
+
+  .actions-area {
+    display: flex;
+    gap: 0.75rem;
+  }
+}
+
+.table-card {
+  border-radius: 4px !important;
+  border: 1px solid #dee2e6 !important;
+  box-shadow: none !important;
+  background: #fff !important;
+}
+
+.route-id {
+  font-weight: 600;
+  color: #007bff;
+  background: #e7f3ff;
+  padding: 2px 6px;
+  border-radius: 2px;
+  font-size: 0.85rem;
+}
+
+.count-badge {
+  background: #f8f9fa;
+  color: #333;
+  padding: 2px 8px;
+  border: 1px solid #ddd;
+  border-radius: 99px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.status-chip {
+  padding: 4px 10px;
+  border-radius: 2px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  display: inline-block;
+  
+  &[data-status="0"] { background: #eee; color: #666; } 
+  &[data-status="1"] { background: #d4edda; color: #155724; } 
+  &[data-status="2"], &[data-status="3"] { background: #cce5ff; color: #004085; } 
+  &[data-status="4"] { background: #fff3cd; color: #856404; } 
+  &[data-status="5"] { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; } 
+  &[data-status="6"] { background: #f8d7da; color: #721c24; } 
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: #999;
+  mat-icon { font-size: 3rem; width: 3rem; height: 3rem; margin-bottom: 1rem; opacity: 0.5; }
+}

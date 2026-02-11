@@ -1,0 +1,31 @@
+<div class="sidebar">
+  <div class="nav-section" *ngIf="authService.isAdmin()">
+    <nav class="nav-group">
+      <a class="nav-item" routerLink="/admin/dashboard" routerLinkActive="active">
+        <mat-icon>dashboard</mat-icon>
+        <span>Dashboard</span>
+      </a>
+      <a class="nav-item" routerLink="/admin/vehicles" routerLinkActive="active">
+        <mat-icon>local_shipping</mat-icon>
+        <span>Vehicles</span>
+      </a>
+      <a class="nav-item" routerLink="/admin/routes" routerLinkActive="active">
+        <mat-icon>map</mat-icon>
+        <span>Routes</span>
+      </a>
+      <a class="nav-item" routerLink="/admin/logs" routerLinkActive="active">
+        <mat-icon>list_alt</mat-icon>
+        <span>Logs</span>
+      </a>
+    </nav>
+  </div>
+
+  <div class="nav-section" *ngIf="!authService.isAdmin() && authService.currentUser()">
+    <nav class="nav-group">
+      <a class="nav-item" routerLink="/driver/dashboard" routerLinkActive="active">
+        <mat-icon>assignment</mat-icon>
+        <span>My Routes</span>
+      </a>
+    </nav>
+  </div>
+</div>

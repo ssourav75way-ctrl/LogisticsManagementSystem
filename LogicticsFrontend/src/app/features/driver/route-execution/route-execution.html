@@ -1,0 +1,95 @@
+<div class="execution-page" *ngIf="route">
+  <div class="page-header">
+    <div class="header-left">
+      <button mat-icon-button routerLink="/driver/dashboard">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h1>Route: {{route.routeNumber}}</h1>
+    </div>
+    <div class="status-badge" [attr.data-status]="route.status">
+      {{getStatusLabel(route.status)}}
+    </div>
+  </div>
+
+  <div class="info-strip">
+    <div class="info-item">
+      <mat-icon>local_shipping</mat-icon>
+      {{route.vehicle?.name}}
+    </div>
+    <div class="info-item">
+      <mat-icon>straighten</mat-icon>
+      {{route.estimatedDistance}} km
+    </div>
+    <div class="info-item">
+      <mat-icon>location_on</mat-icon>
+      {{route.stops?.length || 0}} Stops
+    </div>
+  </div>
+
+  <div class="main-layout">
+    <div class="stops-section">
+      <h3>STOPS LIST</h3>
+      <div *ngFor="let stop of route.stops; let i = index" class="stop-row">
+        <div class="stop-index">{{i + 1}}</div>
+        <div class="stop-info">
+          <div class="stop-name">{{stop.locationName}}</div>
+          <div class="stop-time">ETA: {{stop.expectedArrival | date:'shortTime'}}</div>
+        </div>
+        <div class="stop-btn-area">
+          <button mat-flat-button color="primary" *ngIf="stop.status === 0" (click)="markArrived(stop.id)" class="small-btn">
+            MARK ARRIVED
+          </button>
+          <button mat-flat-button color="accent" *ngIf="stop.status === 1" (click)="markDelivered(stop.id)" class="small-btn">
+            MARK DELIVERED
+          </button>
+          <div class="arrived-check" *ngIf="stop.status === 2">
+            <mat-icon>check_circle</mat-icon> DELIVERED
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls-section">
+      <mat-card class="action-card">
+        <h3>CONTROLS</h3>
+        <div class="button-stack">
+          <button mat-raised-button color="primary" *ngIf="route.status === 1" (click)="updateStatus(2)" class="big-btn">
+            START ROUTE
+          </button>
+
+          <div class="arrival-box" *ngIf="route.status >= 2 && route.status < 5">
+            <button mat-raised-button class="big-btn complete-btn" (click)="updateStatus(5)" [class.highlight]="allStopsDelivered()">
+              COMPLETE JOURNEY
+            </button>
+            <p class="hint" *ngIf="allStopsDelivered()">All stops delivered! Please finish the journey.</p>
+            <p class="hint warning" *ngIf="!allStopsDelivered()" style="color: #856404; font-size: 0.75rem; margin-top: 4px;">
+              * Some deliveries are still pending.
+            </p>
+          </div>
+
+          <button mat-stroked-button color="warn" (click)="issueDuringTransit()" class="issue-btn" style="margin-top: 10px;">
+            ISSUE DURING THE TRANSIT
+          </button>
+        </div>
+      </mat-card>
+
+      <div class="notes-box" *ngIf="route.notes">
+        <h4>Dispatcher Notes:</h4>
+        <p>{{route.notes}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!route && !loading" class="empty-state">
+  <mat-icon>error_outline</mat-icon>
+  <p>Route not available.</p>
+  <button mat-button color="primary" routerLink="/driver/dashboard">BACK TO DASHBOARD</button>
+</div>
+
+<div *ngIf="!route && !loading" class="empty-state">
+  <mat-icon>error_outline</mat-icon>
+  <h2>Route not found</h2>
+  <p>The route you are looking for does not exist or you don't have access.</p>
+  <button mat-button color="primary" routerLink="/driver/dashboard">Return to Dashboard</button>
+</div>

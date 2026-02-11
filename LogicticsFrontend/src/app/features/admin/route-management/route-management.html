@@ -1,0 +1,104 @@
+<div class="page-container">
+  <div class="header-row">
+    <div class="title-area">
+      <h1>Route Management</h1>
+      <p>Manage and track delivery routes</p>
+    </div>
+    
+    <div class="actions-area">
+      <input type="file" #fileInput (change)="onFileSelected($event)" accept=".xlsx" hidden />
+      
+      <button mat-stroked-button color="primary" (click)="fileInput.click()" [disabled]="uploading">
+        <mat-icon>{{ uploading ? 'sync' : 'upload_file' }}</mat-icon>
+        Bulk Upload
+      </button>
+
+      <button mat-raised-button color="primary" (click)="openCreateRouteDialog()">
+        <mat-icon>add</mat-icon> Create Route
+      </button>
+    </div>
+  </div>
+
+  <div class="filter-toolbar">
+    <mat-form-field appearance="outline" class="compact-field">
+      <mat-label>Status Filter</mat-label>
+      <mat-select (selectionChange)="filterByStatus($event.value)">
+        <mat-option value="">All Statuses</mat-option>
+        <mat-option value="0">Created</mat-option>
+        <mat-option value="1">Assigned</mat-option>
+        <mat-option value="2">Started</mat-option>
+        <mat-option value="4">Arrived</mat-option>
+        <mat-option value="5">Completed</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <mat-card class="table-card">
+    <mat-table [dataSource]="filteredRoutes">
+      <ng-container matColumnDef="routeNumber">
+        <mat-header-cell *matHeaderCellDef> Route # </mat-header-cell>
+        <mat-cell *matCellDef="let route"> 
+          <span class="route-id">{{route.routeNumber}}</span>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="driver">
+        <mat-header-cell *matHeaderCellDef> Driver </mat-header-cell>
+        <mat-cell *matCellDef="let route"> {{route.driverName || 'Not Assigned'}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="vehicle">
+        <mat-header-cell *matHeaderCellDef> Vehicle </mat-header-cell>
+        <mat-cell *matCellDef="let route"> {{route.vehicleNumber || '-'}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="distance">
+        <mat-header-cell *matHeaderCellDef> Dist. </mat-header-cell>
+        <mat-cell *matCellDef="let route"> {{route.estimatedDistance}} km </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="stops">
+        <mat-header-cell *matHeaderCellDef> Stops </mat-header-cell>
+        <mat-cell *matCellDef="let route"> 
+          <div class="stops-cell">
+            <span class="count-badge">{{route.stops?.length || 0}}</span>
+            <button mat-icon-button color="primary" class="mini-btn" (click)="openEditRouteDialog(route)" title="Manage Stops">
+              <mat-icon>edit_location</mat-icon>
+            </button>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+        <mat-cell *matCellDef="let route"> 
+          <span class="status-chip" [attr.data-status]="route.status">
+            {{getStatusName(route.status)}}
+          </span>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+        <mat-cell *matCellDef="let route"> 
+          <div class="action-buttons">
+            <button mat-icon-button color="primary" (click)="openEditRouteDialog(route)" title="Edit Route">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deleteRoute(route.id)" title="Delete Route">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <div *ngIf="filteredRoutes.length === 0" class="empty-state">
+      <mat-icon>route</mat-icon>
+      <p>No routes found.</p>
+    </div>
+  </mat-card>
+</div>

@@ -1,0 +1,203 @@
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
+
+:root {
+  --primary: #0056b3; 
+  --primary-dark: #004085;
+  --accent: #c82333; 
+  --success: #218838;
+  --warning: #e0a800;
+  --info: #117a8b;
+  
+  --bg-main: #f4f7f6;
+  --bg-card: #ffffff;
+  --text-main: #333333;
+  --text-muted: #777777;
+  --border-color: #cccccc;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body { 
+  height: 100%; 
+  margin: 0; 
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px; /* Reduced base font size */
+  background-color: var(--bg-main);
+  color: var(--text-main);
+}
+
+.spacer { flex: 1 1 auto; }
+
+h1 { font-size: 1.5rem; margin-bottom: 1rem; color: #333; }
+h2 { font-size: 1.25rem; margin-bottom: 0.75rem; color: #444; }
+h3 { font-size: 1.1rem; margin-bottom: 0.5rem; color: #555; }
+
+/* Standard Material Component Styling */
+.mat-mdc-card {
+  border-radius: 2px !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1) !important;
+  border: 1px solid var(--border-color) !important;
+  background-color: #ffffff !important;
+}
+
+.mat-mdc-card-header {
+  padding: 8px 12px !important;
+  border-bottom: 1px solid #eee;
+}
+
+.mat-mdc-button-base {
+  border-radius: 2px !important;
+  text-transform: none !important;
+  font-weight: 500 !important;
+}
+
+.mat-mdc-unelevated-button, .mat-mdc-raised-button, .mat-mdc-flat-button, .mat-mdc-stroked-button {
+  height: 30px !important;
+  line-height: 30px !important;
+  padding: 0 10px !important;
+  font-size: 0.8rem !important;
+}
+
+.mat-mdc-button-base .mat-icon {
+  font-size: 18px !important;
+  width: 18px !important;
+  height: 18px !important;
+  display: inline-flex !important;
+  vertical-align: middle !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.mat-mdc-button-base .mdc-button__label {
+  display: inline-flex !important;
+  align-items: center !important;
+  height: 100% !important;
+}
+
+.mat-mdc-button-base .mat-icon:first-child {
+  margin-right: 6px !important;
+}
+
+.mat-mdc-icon-button {
+  width: 32px !important;
+  height: 32px !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.mat-mdc-icon-button .mat-icon {
+  margin: 0 !important;
+}
+
+/* Table Style - Compact */
+.mat-mdc-table {
+  background: white !important;
+}
+
+.mat-mdc-header-row {
+  background: #e9ecef !important;
+  height: 40px !important;
+}
+
+.mat-mdc-row {
+  height: 40px !important;
+}
+
+.mat-mdc-header-cell {
+  color: #333 !important;
+  font-weight: bold !important;
+  font-size: 0.85rem !important;
+}
+
+.mat-mdc-cell {
+  font-size: 0.85rem !important;
+}
+
+/* Form Fields - Compact */
+.mat-mdc-form-field {
+  font-size: 0.85rem !important;
+}
+
+.mdc-text-field--outlined {
+  --mdc-outlined-text-field-container-shape: 2px;
+}
+
+.mat-mdc-form-field-subscript-wrapper {
+  display: none !important; /* Save space */
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #bbb;
+  border-radius: 0;
+}
+
+/* Global Utility Classes for Compact UI */
+.filter-toolbar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 1rem;
+  background: #fff;
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+}
+
+.compact-field {
+  width: 160px;
+}
+
+.compact-field .mat-mdc-text-field-wrapper {
+  height: 36px !important;
+  padding: 0 10px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.compact-field .mat-mdc-form-field-infix {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  min-height: unset !important;
+  display: flex !important;
+  align-items: center !important;
+  border-top: 0 !important; /* Fix vertical alignment for label in outline */
+}
+
+.compact-field .mat-mdc-form-field-label-wrapper {
+  top: -8px !important; /* Move label up slightly */
+}
+
+.compact-field .mat-mdc-select-value {
+  font-size: 0.85rem !important;
+}
+
+.small-btn {
+  height: 28px !important;
+  line-height: 28px !important;
+  font-size: 0.75rem !important;
+  padding: 0 10px !important;
+  min-width: unset !important;
+}
+
+.fade-in {
+  animation: none !important;
+}
+
+mat-icon {
+  display: inline-flex !important;
+  vertical-align: middle !important;
+  align-items: center !important;
+  justify-content: center !important;
+}

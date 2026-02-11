@@ -1,0 +1,17 @@
+<div class="app-layout">
+  <!-- Navbar at the top -->
+  <app-navbar *ngIf="authService.currentUser()"></app-navbar>
+
+  <!-- Main container with sidebar and content -->
+  <div class="main-container">
+    <!-- Sidebar: Only visible if authenticated -->
+    <aside class="sidebar-wrapper" *ngIf="authService.currentUser()">
+      <app-sidebar></app-sidebar>
+    </aside>
+
+    <!-- Dynamic Content Area -->
+    <main class="content-wrapper" [class.no-sidebar]="!authService.currentUser()">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

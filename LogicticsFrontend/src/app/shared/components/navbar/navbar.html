@@ -1,0 +1,15 @@
+<mat-toolbar class="navbar">
+  <div class="logo-group">
+    <mat-icon class="logo-icon">local_shipping</mat-icon>
+    <span class="logo-text">FleetTrack</span>
+  </div>
+
+  <span class="spacer"></span>
+
+  <div class="user-info" *ngIf="authService.currentUser() as user">
+    <span class="user-name">{{ user.name }}</span>
+    <button mat-icon-button (click)="authService.logout()" title="Logout">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>

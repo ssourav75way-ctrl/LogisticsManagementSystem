@@ -1,0 +1,83 @@
+<div class="page-container">
+  <div class="header-row">
+    <div class="title-area">
+      <h1>Operational Logs</h1>
+    </div>
+    <div class="header-actions">
+      <button mat-raised-button color="primary" (click)="exportToCsv()" [disabled]="logs.length === 0">
+        <mat-icon>download</mat-icon> Export CSV
+      </button>
+    </div>
+  </div>
+
+  <div class="filter-toolbar">
+    <mat-form-field appearance="outline" class="compact-field">
+      <mat-label>Vehicle</mat-label>
+      <mat-select [(ngModel)]="filters.vehicleId" (selectionChange)="onFilterChange()">
+        <mat-option [value]="null">All Vehicles</mat-option>
+        <mat-option *ngFor="let v of vehicles" [value]="v.id">{{v.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="compact-field">
+      <mat-label>Driver</mat-label>
+      <mat-select [(ngModel)]="filters.driverId" (selectionChange)="onFilterChange()">
+        <mat-option [value]="null">All Drivers</mat-option>
+        <mat-option *ngFor="let d of drivers" [value]="d.id">{{d.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="compact-field">
+      <mat-label>Route</mat-label>
+      <mat-select [(ngModel)]="filters.routeId" (selectionChange)="onFilterChange()">
+        <mat-option [value]="null">All Routes</mat-option>
+        <mat-option *ngFor="let r of routes" [value]="r.id">{{r.routeNumber}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-stroked-button color="warn" class="small-btn" (click)="resetFilters()" *ngIf="filters.vehicleId || filters.driverId || filters.routeId">
+      CLEAR
+    </button>
+  </div>
+
+  <mat-card class="table-card">
+    <mat-table [dataSource]="logs">
+      <ng-container matColumnDef="time">
+        <mat-header-cell *matHeaderCellDef> Time </mat-header-cell>
+        <mat-cell *matCellDef="let log"> 
+          <span class="time-text">{{log.eventTime | date:'shortTime'}}</span>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="event">
+        <mat-header-cell *matHeaderCellDef> Event </mat-header-cell>
+        <mat-cell *matCellDef="let log">
+          <div class="event-tag" [attr.data-type]="log.eventType">
+            <mat-icon>{{getEventIcon(log.eventType)}}</mat-icon>
+            <span>{{getEventTypeLabel(log.eventType)}}</span>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="info">
+        <mat-header-cell *matHeaderCellDef> Info </mat-header-cell>
+        <mat-cell *matCellDef="let log"> 
+          <span class="info-text">{{log.description}}</span>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="driver">
+        <mat-header-cell *matHeaderCellDef> Driver </mat-header-cell>
+        <mat-cell *matCellDef="let log"> {{log.driverName || 'System'}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="vehicle">
+        <mat-header-cell *matHeaderCellDef> Vehicle </mat-header-cell>
+        <mat-cell *matCellDef="let log"> {{log.vehicleNumber || '-'}} </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;" [class.issue-row]="row.eventType === 4"></mat-row>
+    </mat-table>
+  </mat-card>
+</div>

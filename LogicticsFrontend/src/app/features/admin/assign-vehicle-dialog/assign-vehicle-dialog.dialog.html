@@ -1,0 +1,23 @@
+<h2 mat-dialog-title>Update Vehicle Status</h2>
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option value="In Transit">In Transit</mat-option>
+        <mat-option value="Idle">Idle</mat-option>
+        <mat-option value="Maintenance">Maintenance</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Current Location</mat-label>
+      <input matInput formControlName="location" />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSave()" [disabled]="form.invalid">
+    Update
+  </button>
+</mat-dialog-actions>
