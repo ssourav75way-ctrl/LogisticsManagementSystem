@@ -40,13 +40,13 @@ export class RegisterComponent {
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      role: ['DRIVER', Validators.required],
     });
   }
 
   onSubmit() {
     if (this.registerForm.valid) {
-      this.authService.register(this.registerForm.value).subscribe({
+      const payload = { ...this.registerForm.value, role: 'DRIVER' };
+      this.authService.register(payload).subscribe({
         next: () => {
           this.snackBar.open('Registration successful! Please login.', 'Close', { duration: 3000 });
           this.router.navigate(['/login']);

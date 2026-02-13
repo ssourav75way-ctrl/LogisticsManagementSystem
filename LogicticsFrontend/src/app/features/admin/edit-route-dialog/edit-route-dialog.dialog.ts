@@ -12,7 +12,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { RouteService } from '../../../core/services/route.service';
 import { VehicleService } from '../../../core/services/vehicle.service';
-import { Route, Stop, Vehicle } from '../../../core/models';
+import { Route, Stop, Vehicle, UpdateRouteRequest, CreateStopRequest } from '../../../core/models';
 
 @Component({
   selector: 'app-edit-route-dialog',
@@ -105,12 +105,13 @@ export class EditRouteDialog implements OnInit {
     if (this.form.valid) {
       const formValue = this.form.value;
 
-      const stopsPayload = formValue.stops.map((stop: Stop, index: number) => ({
+      const stopsPayload = formValue.stops.map((stop: Partial<Stop>, index: number) => ({
         ...stop,
         stopNumber: index + 1,
+        // Ensure expectedArrival is kept as Date or undefined, handled by UpdatedRouteRequest logic
       }));
 
-      const payload: Partial<Route> & { stops: Partial<Stop>[] } = {
+      const payload: UpdateRouteRequest = {
         id: this.data.route.id,
         routeNumber: formValue.routeNumber,
         driverId: Number(formValue.driverId),

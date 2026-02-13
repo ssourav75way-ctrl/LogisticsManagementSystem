@@ -3,7 +3,15 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Route, Stop } from '../models';
+import {
+  Route,
+  Stop,
+  CreateRouteRequest,
+  UpdateRouteRequest,
+  BulkUploadResponse,
+  ReportIssueRequest,
+  UpdateStopStatusRequest,
+} from '../models';
 
 import { environment } from '../../../environments/environment';
 
@@ -67,28 +75,29 @@ export class RouteService {
     );
   }
 
-  createRoute(route: any): Observable<any> {
-    var dataroute = this.http.post(this.apiUrl, route);
+  createRoute(route: CreateRouteRequest): Observable<unknown> {
+    const dataroute = this.http.post(this.apiUrl, route);
     console.log(dataroute);
     return dataroute;
   }
 
-  updateRoute(id: number, route: any): Observable<any> {
+  updateRoute(id: number, route: UpdateRouteRequest): Observable<unknown> {
     return this.http.put(`${this.apiUrl}/${id}`, route);
   }
 
-  bulkUpload(file: File): Observable<any> {
+  bulkUpload(file: File): Observable<BulkUploadResponse> {
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.post(`${this.apiUrl}/bulk-upload`, formData);
+    return this.http.post<BulkUploadResponse>(`${this.apiUrl}/bulk-upload`, formData);
   }
 
-  deleteRoute(id: number): Observable<any> {
+  deleteRoute(id: number): Observable<unknown> {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
-  reportIssue(routeId: number, description: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/${routeId}/report-issue`, { description });
+  reportIssue(routeId: number, description: string): Observable<unknown> {
+    const payload: ReportIssueRequest = { description };
+    return this.http.post(`${this.apiUrl}/${routeId}/report-issue`, payload);
   }
 
   updateStopStatus(
@@ -96,7 +105,8 @@ export class RouteService {
     stopId: number,
     status: number,
     notes?: string,
-  ): Observable<any> {
-    return this.http.post(`${this.apiUrl}/${routeId}/stop/${stopId}/update`, { status, notes });
+  ): Observable<unknown> {
+    const payload: UpdateStopStatusRequest = { status, notes };
+    return this.http.post(`${this.apiUrl}/${routeId}/stop/${stopId}/update`, payload);
   }
 }

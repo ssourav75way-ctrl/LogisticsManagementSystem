@@ -78,8 +78,10 @@ export class RouteManagementComponent implements OnInit {
     }
   }
 
-  onFileSelected(event: any) {
-    const file: File = event.target.files[0];
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.length) return;
+    const file = input.files[0];
     if (file) {
       if (!file.name.endsWith('.xlsx')) {
         this.snackBar.open('Please upload an Excel file (.xlsx)', 'Close', { duration: 3000 });

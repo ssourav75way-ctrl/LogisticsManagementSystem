@@ -41,7 +41,8 @@ export class CreateVehicleDialog {
 
   onSubmit() {
     if (this.vehicleForm.valid) {
-      this.vehicleService.createVehicle(this.vehicleForm.value).subscribe({
+      const payload = { ...this.vehicleForm.value, isActive: 'true' };
+      this.vehicleService.createVehicle(payload).subscribe({
         next: () => {
           this.snackBar.open('Vehicle created successfully', 'Close', { duration: 3000 });
           this.dialogRef.close(true);

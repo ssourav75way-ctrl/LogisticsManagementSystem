@@ -12,7 +12,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { RouteService } from '../../../core/services/route.service';
 import { VehicleService } from '../../../core/services/vehicle.service';
-import { Stop, Vehicle } from '../../../core/models';
+import { Stop, Vehicle, CreateRouteRequest, CreateStopRequest } from '../../../core/models';
 
 @Component({
   selector: 'app-create-route-dialog',
@@ -88,13 +88,22 @@ export class CreateRouteDialog implements OnInit {
     if (this.form.valid) {
       const formValue = this.form.value;
 
-      const stopsPayload = formValue.stops.map((stop: Partial<Stop>, index: number) => ({
-        ...stop,
-        stopNumber: index + 1,
-      }));
+      const stopsPayload: CreateStopRequest[] = formValue.stops.map(
+        (stop: Partial<Stop>, index: number) => ({
+          locationName: stop.locationName || '',
+          expectedArrival: stop.expectedArrival || new Date(),
+          stopNumber: index + 1,
+        }),
+      );
 
-      const payload = {
-        ...formValue,
+      const payload: CreateRouteRequest = {
+        routeNumber: formValue.routeNumber,
+        driverId: Number(formValue.driverId),
+        vehicleId: Number(formValue.vehicleId),
+        estimatedDistance: Number(formValue.estimatedDistance || 0),
+        startTime: formValue.startTime,
+        endTime: formValue.endTime,
+        notes: formValue.notes || '',
         stops: stopsPayload,
       };
 

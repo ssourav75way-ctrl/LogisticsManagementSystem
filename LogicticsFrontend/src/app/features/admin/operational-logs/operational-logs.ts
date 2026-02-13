@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -49,12 +49,16 @@ export class OperationalLogsComponent implements OnInit, OnDestroy {
     private logService: LogService,
     private routeService: RouteService,
     private vehicleService: VehicleService,
+    @Inject(PLATFORM_ID) private platformId: Object,
   ) {}
 
   ngOnInit() {
     this.loadInitialData();
     this.loadLogs();
-    this.refreshSub = interval(10000).subscribe(() => this.loadLogs());
+
+    if (isPlatformBrowser(this.platformId)) {
+      this.refreshSub = interval(10000).subscribe(() => this.loadLogs());
+    }
   }
 
   ngOnDestroy() {
@@ -117,6 +121,19 @@ export class OperationalLogsComponent implements OnInit, OnDestroy {
     return types[type] || 'Event';
   }
 
+  getVehicleName(log: OperationalLog): string {
+    if (log.vehicleNumber) return log.vehicleNumber;
+    if (log.vehicle?.name) return log.vehicle.name;
+    if (log.vehicle?.name) return log.vehicle.name;
+
+    if (log.vehicleId) {
+      const vehicle = this.vehicles.find((v) => v.id === log.vehicleId);
+      if (vehicle) return vehicle.name;
+    }
+
+    return '-';
+  }
+
   exportToCsv() {
     if (this.logs.length === 0) return;
 
@@ -126,7 +143,7 @@ export class OperationalLogsComponent implements OnInit, OnDestroy {
       this.getEventTypeLabel(log.eventType),
       `"${log.description || ''}"`,
       log.driverName || 'System',
-      log.vehicleNumber || '-',
+      this.getVehicleName(log),
       log.routeNumber || '-',
     ]);
 

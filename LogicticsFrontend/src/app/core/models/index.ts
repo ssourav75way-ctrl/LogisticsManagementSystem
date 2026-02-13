@@ -5,3 +5,4 @@ export * from './route.model';
 export * from './operational-log.model';
 export * from './route-status.enum';
 export * from './stop-status.enum';
+export * from './api.models';

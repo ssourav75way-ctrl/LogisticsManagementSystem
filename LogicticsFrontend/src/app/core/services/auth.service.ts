@@ -4,7 +4,7 @@ import { Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 
-import { User } from '../models';
+import { User, LoginRequest, LoginResponse, RegisterRequest, DecodedToken } from '../models';
 
 import { environment } from '../../../environments/environment';
 
@@ -29,22 +29,22 @@ export class AuthService {
     const token = typeof localStorage !== 'undefined' ? localStorage.getItem(this.tokenKey) : null;
     if (token) {
       try {
-        const decoded: any = jwtDecode(token);
+        const decoded: DecodedToken = jwtDecode(token);
         this.currentUser.set({
           ...decoded,
-          id: decoded.sub ? parseInt(decoded.sub, 10) : decoded.id,
-          role: (decoded.role || decoded.Role)?.toUpperCase(),
-          name: decoded.name || decoded.UniqueName || decoded.email,
-        });
+          id: decoded.sub ? parseInt(decoded.sub, 10) : (decoded.id ?? 0),
+          role: (decoded.role || decoded.Role || 'user').toUpperCase(),
+          name: decoded.name || decoded.UniqueName || decoded.email || 'User',
+        } as User);
       } catch (e) {
         this.logout();
       }
     }
   }
 
-  login(credentials: { email: string; password: string }): Observable<any> {
+  login(credentials: LoginRequest): Observable<LoginResponse> {
     return this.http.post(`${this.apiUrl}/login`, credentials).pipe(
-      tap((res: any) => {
+      tap((res: LoginResponse) => {
         const token = res.token || res.Token;
         if (token) {
           localStorage.setItem(this.tokenKey, token);
@@ -54,7 +54,7 @@ export class AuthService {
     );
   }
 
-  register(data: any): Observable<any> {
+  register(data: RegisterRequest): Observable<unknown> {
     return this.http.post(`${this.apiUrl}/register`, data);
   }
 

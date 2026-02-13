@@ -19,7 +19,7 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="compact-field">
+    <mat-form-field appearance="outline" class="compact-field" >
       <mat-label>Driver</mat-label>
       <mat-select [(ngModel)]="filters.driverId" (selectionChange)="onFilterChange()">
         <mat-option [value]="null">All Drivers</mat-option>
@@ -73,7 +73,7 @@
 
       <ng-container matColumnDef="vehicle">
         <mat-header-cell *matHeaderCellDef> Vehicle </mat-header-cell>
-        <mat-cell *matCellDef="let log"> {{log.vehicleNumber || '-'}} </mat-cell>
+        <mat-cell *matCellDef="let log"> {{getVehicleName(log)}} </mat-cell>
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

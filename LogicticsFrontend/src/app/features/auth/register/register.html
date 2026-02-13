@@ -24,13 +24,7 @@
           <mat-error *ngIf="registerForm.get('password')?.hasError('minLength')">Min 6 characters</mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Role</mat-label>
-          <mat-select formControlName="role">
-            <mat-option value="ADMIN">Dispatcher (Admin)</mat-option>
-            <mat-option value="DRIVER">Driver</mat-option>
-          </mat-select>
-        </mat-form-field>
+
 
         <button mat-raised-button color="primary" class="full-width login-btn" [disabled]="registerForm.invalid" type="submit">
           REGISTER
