@@ -13,6 +13,13 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.driver-stats-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
   margin-bottom: 1rem;
 }
 
@@ -32,11 +39,18 @@
     &.green-icon { color: #155724; }
     &.orange-icon { color: #856404; }
     &.purple-icon { color: #383d41; }
+    &.teal-icon { color: #00796b; }
+    &.indigo-icon { color: #283593; }
   }
 
   .stat-content {
     .count { font-size: 1.25rem; font-weight: bold; display: block; }
     .label { font-size: 0.75rem; color: #666; text-transform: uppercase; }
+  }
+
+  &.mini {
+    padding: 0.5rem 0.75rem;
+    .stat-content .count { font-size: 1.1rem; }
   }
 }
 
@@ -58,10 +72,29 @@ mat-card {
   }
 }
 
-.attention-item, .activity-item {
+.activity-card {
+  grid-column: 1 / -1;
+}
+
+.attention-item, .activity-item, .driver-item {
   padding: 0.5rem 0.75rem;
   font-size: 0.85rem;
   border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.v-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.v-name { font-weight: 600; }
+.v-type, .route-tag {
+  font-size: 0.7rem;
+  color: #666;
 }
 
 .v-status {
@@ -73,13 +106,38 @@ mat-card {
   &.maintenance { background: #f8d7da; color: #721c24; }
 }
 
-.activity-icon {
-  display: none; /* Simplify further */
+.driver-badge {
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  font-weight: bold;
+  border: 1px solid #999;
+  text-transform: uppercase;
+  &.assigned { background: #fff3cd; color: #856404; border-color: #ffc107; }
+  &.on-route { background: #d1ecf1; color: #0c5460; border-color: #17a2b8; }
 }
 
-.empty-msg { padding: 1rem; font-size: 0.8rem; color: #999; }
+.activity-icon {
+  display: inline-flex;
+  margin-right: 0.5rem;
+  mat-icon { font-size: 16px; width: 16px; height: 16px; color: #666; }
+  &.warn mat-icon { color: #b71c1c; }
+}
+
+.activity-item {
+  display: flex;
+  align-items: flex-start;
+}
+
+.activity-details {
+  flex: 1;
+  .desc { margin: 0; font-size: 0.85rem; }
+  .time { font-size: 0.7rem; color: #888; }
+}
+
+.empty-msg, .empty-list { padding: 1rem; font-size: 0.8rem; color: #999; }
 
 @media (max-width: 800px) {
   .stats-container { grid-template-columns: 1fr 1fr; }
+  .driver-stats-row { grid-template-columns: 1fr; }
   .main-grid { grid-template-columns: 1fr; }
 }

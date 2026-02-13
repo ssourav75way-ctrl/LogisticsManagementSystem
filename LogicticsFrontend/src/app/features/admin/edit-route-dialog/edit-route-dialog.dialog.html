@@ -26,9 +26,11 @@
         <mat-select formControlName="status">
           <mat-option [value]="0">Created</mat-option>
           <mat-option [value]="1">Assigned</mat-option>
-          <mat-option [value]="2">In Transit</mat-option>
-          <mat-option [value]="3">Completed</mat-option>
-          <mat-option [value]="4">Cancelled</mat-option>
+          <mat-option [value]="2">Started</mat-option>
+          <mat-option [value]="3">In Progress</mat-option>
+          <mat-option [value]="4">Arrived</mat-option>
+          <mat-option [value]="5">Completed</mat-option>
+          <mat-option [value]="6">Cancelled</mat-option>
         </mat-select>
       </mat-form-field>
 
@@ -51,9 +53,13 @@
     <div class="stops-section">
       <div class="stops-header">
         <h3>Stops</h3>
-        <button mat-stroked-button color="primary" type="button" (click)="addStop()">
+        <button mat-stroked-button color="primary" type="button" (click)="addStop()" [disabled]="data.route.status >= 5">
           <mat-icon>add_location</mat-icon> Add Stop
         </button>
+      </div>
+      <div class="completed-warning" *ngIf="data.route.status >= 5">
+        <mat-icon>info</mat-icon>
+        <span>This route is {{data.route.status === 5 ? 'completed' : 'cancelled'}}. Stops cannot be modified.</span>
       </div>
 
       <div formArrayName="stops" class="stops-list">
@@ -82,10 +88,11 @@
               type="button"
               (click)="addStopAt(i + 1)"
               title="Add stop after this"
+              [disabled]="data.route.status >= 5"
             >
               <mat-icon>add</mat-icon>
             </button>
-            <button mat-icon-button color="warn" type="button" (click)="removeStop(i)">
+            <button mat-icon-button color="warn" type="button" (click)="removeStop(i)" [disabled]="data.route.status >= 5">
               <mat-icon>delete</mat-icon>
             </button>
           </div>

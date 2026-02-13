@@ -35,4 +35,13 @@ public class AuthRepository : IAuthRepository
     {
         return await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
     }
+
+    public async Task<int> UpdateUserStatusDB(int userId, string status)
+    {
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+        if (user == null) return 0;
+        user.Status = status;
+        _context.Users.Update(user);
+        return await _context.SaveChangesAsync();
+    }
 }

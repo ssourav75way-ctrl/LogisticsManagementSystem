@@ -109,4 +109,8 @@ export class RouteService {
     const payload: UpdateStopStatusRequest = { status, notes };
     return this.http.post(`${this.apiUrl}/${routeId}/stop/${stopId}/update`, payload);
   }
+
+  completeRoute(routeId: number): Observable<unknown> {
+    return this.http.post(`${this.apiUrl}/${routeId}/complete`, {});
+  }
 }

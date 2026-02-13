@@ -40,6 +40,7 @@ export class RouteManagementComponent implements OnInit {
     'routeNumber',
     'driver',
     'vehicle',
+    'window',
     'distance',
     'stops',
     'status',
@@ -121,6 +122,20 @@ export class RouteManagementComponent implements OnInit {
       'Cancelled',
     ];
     return statuses[status] || 'Unknown';
+  }
+
+  getDriverStatusForRoute(status: number): string {
+    if (status === 0 || status === 1) return 'Assigned';
+    if (status === 2 || status === 3 || status === 4) return 'On Route';
+    if (status === 5) return 'Completed';
+    if (status === 6) return 'Cancelled';
+    return '';
+  }
+
+  getDriverStatusClass(status: number): string {
+    if (status === 0 || status === 1) return 'drv-assigned';
+    if (status === 2 || status === 3 || status === 4) return 'drv-onroute';
+    return '';
   }
 
   deleteRoute(id: number) {

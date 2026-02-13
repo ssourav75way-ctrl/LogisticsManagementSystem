@@ -9,10 +9,12 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { RouteService } from '../../../core/services/route.service';
 import { VehicleService } from '../../../core/services/vehicle.service';
 import { Stop, Vehicle, CreateRouteRequest, CreateStopRequest } from '../../../core/models';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-create-route-dialog',
@@ -28,6 +30,7 @@ import { Stop, Vehicle, CreateRouteRequest, CreateStopRequest } from '../../../c
     MatNativeDateModule,
     MatIconModule,
     MatDividerModule,
+    MatSnackBarModule,
     ReactiveFormsModule,
   ],
   templateUrl: './create-route-dialog.dialog.html',
@@ -41,6 +44,7 @@ export class CreateRouteDialog implements OnInit {
     private fb: FormBuilder,
     private routeService: RouteService,
     private vehicleService: VehicleService,
+    private snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<CreateRouteDialog>,
   ) {
     this.form = this.fb.group({
@@ -87,6 +91,34 @@ export class CreateRouteDialog implements OnInit {
   onSave(): void {
     if (this.form.valid) {
       const formValue = this.form.value;
+      const startTime = new Date(formValue.startTime);
+      const endTime = new Date(formValue.endTime);
+
+      if (startTime >= endTime) {
+        this.snackBar.open('Start time must be before end time', 'Close', { duration: 5000 });
+        return;
+      }
+
+      for (let i = 0; i < formValue.stops.length; i++) {
+        const stop = formValue.stops[i];
+        const arrival = new Date(stop.expectedArrival);
+        if (arrival < startTime) {
+          this.snackBar.open(
+            `Stop "${stop.locationName || 'Stop ' + (i + 1)}" expected arrival is before the route start time`,
+            'Close',
+            { duration: 5000 },
+          );
+          return;
+        }
+        if (arrival > endTime) {
+          this.snackBar.open(
+            `Stop "${stop.locationName || 'Stop ' + (i + 1)}" expected arrival is after the route end time`,
+            'Close',
+            { duration: 5000 },
+          );
+          return;
+        }
+      }
 
       const stopsPayload: CreateStopRequest[] = formValue.stops.map(
         (stop: Partial<Stop>, index: number) => ({
@@ -108,8 +140,21 @@ export class CreateRouteDialog implements OnInit {
       };
 
       this.routeService.createRoute(payload).subscribe({
-        next: () => this.dialogRef.close(true),
-        error: (err: Error) => console.error('Creation failed', err),
+        next: (res: unknown) => {
+          const result = res as { success?: boolean; message?: string };
+          if (result?.success === false) {
+            this.snackBar.open(result.message || 'Route creation failed', 'Close', {
+              duration: 5000,
+            });
+          } else {
+            this.snackBar.open('Route created successfully', 'OK', { duration: 3000 });
+            this.dialogRef.close(true);
+          }
+        },
+        error: (err: HttpErrorResponse) => {
+          const msg = err.error?.message || 'Route creation failed. Please check your inputs.';
+          this.snackBar.open(msg, 'Close', { duration: 5000 });
+        },
       });
     }
   }

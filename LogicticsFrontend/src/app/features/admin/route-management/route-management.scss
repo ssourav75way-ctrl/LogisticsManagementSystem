@@ -69,3 +69,26 @@
   color: #999;
   mat-icon { font-size: 3rem; width: 3rem; height: 3rem; margin-bottom: 1rem; opacity: 0.5; }
 }
+
+.driver-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.drv-badge {
+  font-size: 0.6rem;
+  padding: 1px 4px;
+  font-weight: bold;
+  text-transform: uppercase;
+  border: 1px solid #ccc;
+  display: inline-block;
+  width: fit-content;
+  &.drv-assigned { background: #fff3cd; color: #856404; border-color: #ffc107; }
+  &.drv-onroute { background: #d1ecf1; color: #0c5460; border-color: #17a2b8; }
+}
+
+.window-text {
+  font-size: 0.75rem;
+  color: #555;
+}

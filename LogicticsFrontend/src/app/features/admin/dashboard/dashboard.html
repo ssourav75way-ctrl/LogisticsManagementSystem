@@ -38,8 +38,49 @@
     </div>
   </div>
 
+  <!-- Driver Stats Row -->
+  <div class="driver-stats-row">
+    <div class="stat-box mini">
+      <mat-icon class="teal-icon">person</mat-icon>
+      <div class="stat-content">
+        <span class="count">{{stats.driversAssigned}}</span>
+        <span class="label">Drivers Assigned</span>
+      </div>
+    </div>
+    <div class="stat-box mini">
+      <mat-icon class="indigo-icon">directions_car</mat-icon>
+      <div class="stat-content">
+        <span class="count">{{stats.driversOnRoute}}</span>
+        <span class="label">Drivers On Route</span>
+      </div>
+    </div>
+  </div>
+
   <div class="main-grid">
-    <!-- Vehicles Requiring Attention (NEW) -->
+    <!-- Driver Status Card -->
+    <mat-card class="attention-card">
+      <mat-card-header>
+        <mat-card-title>Driver Status</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="attention-list">
+          <div class="driver-item" *ngFor="let d of driverSummaries">
+            <div class="v-info">
+              <span class="v-name">{{d.name}}</span>
+              <span class="route-tag">{{d.routeNumber}}</span>
+            </div>
+            <span class="driver-badge" [class.assigned]="d.status === 'Assigned'" [class.on-route]="d.status === 'On Route'">
+              {{d.status}}
+            </span>
+          </div>
+          <div *ngIf="driverSummaries.length === 0" class="empty-msg">
+            No active driver assignments.
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Vehicles Requiring Attention -->
     <mat-card class="attention-card">
       <mat-card-header>
         <mat-card-title>Vehicles Requiring Attention</mat-card-title>
@@ -69,8 +110,8 @@
       <mat-card-content>
         <div class="activity-list">
           <div class="activity-item" *ngFor="let log of recentLogs">
-            <div class="activity-icon" [class.warn]="log.eventType === 4">
-              <mat-icon>{{log.eventType === 4 ? 'error' : 'notifications'}}</mat-icon>
+            <div class="activity-icon" [class.warn]="log.eventType === 5">
+              <mat-icon>{{getLogIcon(log.eventType)}}</mat-icon>
             </div>
             <div class="activity-details">
               <p class="desc">{{log.description}}</p>
@@ -84,4 +125,5 @@
       </mat-card-content>
     </mat-card>
   </div>
+
 </div>

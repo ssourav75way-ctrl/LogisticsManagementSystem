@@ -104,12 +104,16 @@ export class OperationalLogsComponent implements OnInit, OnDestroy {
   getEventIcon(type: number) {
     switch (type) {
       case 0:
-        return 'info';
-      case 2:
         return 'play_arrow';
+      case 1:
+        return 'location_on';
+      case 2:
+        return 'schedule';
       case 3:
         return 'done_all';
       case 4:
+        return 'cancel';
+      case 5:
         return 'error';
       default:
         return 'event';
@@ -117,7 +121,14 @@ export class OperationalLogsComponent implements OnInit, OnDestroy {
   }
 
   getEventTypeLabel(type: number) {
-    const types = ['Created', 'Assigned', 'Started', 'Completed', 'Issue Reported'];
+    const types = [
+      'Route Started',
+      'Stop Reached',
+      'Delay Reported',
+      'Route Completed',
+      'Route Cancelled',
+      'Issue Reported',
+    ];
     return types[type] || 'Event';
   }
 

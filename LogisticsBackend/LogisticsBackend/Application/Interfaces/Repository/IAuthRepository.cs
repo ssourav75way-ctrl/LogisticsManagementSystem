@@ -8,4 +8,5 @@ public interface IAuthRepository
     public Task RegisterUser(User user);
     Task<User?> GetUserByEmail(string email);
     Task<User?> GetUserByIdDB(int userId);
+    Task<int> UpdateUserStatusDB(int userId, string status);
 }

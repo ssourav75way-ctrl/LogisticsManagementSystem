@@ -33,7 +33,7 @@
         <div class="stop-index">{{i + 1}}</div>
         <div class="stop-info">
           <div class="stop-name">{{stop.locationName}}</div>
-          <div class="stop-time">ETA: {{stop.expectedArrival | date:'shortTime':'+0530'}}</div>
+          <div class="stop-time">ETA: {{toIST(stop.expectedArrival)}}</div>
         </div>
         <div class="stop-btn-area">
           <button mat-flat-button color="primary" *ngIf="stop.status === 0" (click)="markArrived(stop.id)" class="small-btn">
@@ -57,13 +57,16 @@
             START ROUTE
           </button>
 
-          <div class="arrival-box" *ngIf="route.status >= 2 && route.status < 5">
-            <button mat-raised-button class="big-btn complete-btn" (click)="updateStatus(5)" [class.highlight]="allStopsDelivered()">
+          <div class="arrival-box" *ngIf="route.status < 5">
+            <button mat-raised-button class="big-btn complete-btn"
+              (click)="completeRoute()"
+              [disabled]="!allStopsDelivered()"
+              [class.highlight]="allStopsDelivered()">
               COMPLETE JOURNEY
             </button>
             <p class="hint" *ngIf="allStopsDelivered()">All stops delivered! Please finish the journey.</p>
             <p class="hint warning" *ngIf="!allStopsDelivered()" style="color: #856404; font-size: 0.75rem; margin-top: 4px;">
-              * Some deliveries are still pending.
+              * All deliveries must be completed before you can finish this journey.
             </p>
           </div>
 
@@ -77,14 +80,15 @@
         <h4>Dispatcher Notes:</h4>
         <p>{{route.notes}}</p>
       </div>
+      <div class="completed-banner" *ngIf="route.status === 5">
+        <mat-icon>check_circle</mat-icon>
+        <div>
+          <strong>Journey Completed</strong>
+          <p>Driver and vehicle have been set to Idle.</p>
+        </div>
+      </div>
     </div>
   </div>
-</div>
-
-<div *ngIf="!route && !loading" class="empty-state">
-  <mat-icon>error_outline</mat-icon>
-  <p>Route not available.</p>
-  <button mat-button color="primary" routerLink="/driver/dashboard">BACK TO DASHBOARD</button>
 </div>
 
 <div *ngIf="!route && !loading" class="empty-state">

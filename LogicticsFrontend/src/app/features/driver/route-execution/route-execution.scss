@@ -112,11 +112,7 @@
   font-size: 0.85rem !important;
   font-weight: bold !important;
   
-  &.highlight {
-    background-color: #c82333 !important;
-    color: #fff !important;
-    border: 1px solid #000 !important;
-  }
+
 }
 
 .arrival-box { margin-bottom: 0.75rem; }
@@ -136,13 +132,23 @@
   .main-layout { grid-template-columns: 1fr; }
 }
 
+.completed-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 12px;
+  background: #d4edda;
+  border: 1px solid #c3e6cb;
+  color: #155724;
+  margin-top: 1rem;
+  mat-icon { font-size: 28px; width: 28px; height: 28px; }
+  p { margin: 2px 0 0 0; font-size: 0.8rem; }
+}
+
 .complete-btn {
-  background-color: #218838 !important; /* Success green */
+  background-color: #218838 !important; 
   color: white !important;
-  &.highlight {
-    animation: pulse 2s infinite;
-    box-shadow: 0 0 0 0 rgba(33, 136, 56, 0.7);
-  }
+  
 }
 
 @keyframes pulse {

@@ -16,5 +16,6 @@ public interface IRouteService
     Task UpdateStopStatus(int routeId, int stopId, StopStatus status, string? notes = null);
     Task ReportDelay(int routeId, string reason);
     Task ReportIssue(int routeId, string description);
+    Task<(bool Success, object Response)> CompleteRoute(int routeId);
     Task<BulkRouteUploadResponseDTO> BulkUploadRoutes(IFormFile file);
 }

@@ -77,6 +77,21 @@ public class RouteService : IRouteService
             return new { success = false, message = conflict };
 
         var id = await _routeRepository.CreateRouteDB(route);
+
+        await _authRepository.UpdateUserStatusDB(route.DriverId, "Assigned");
+
+        var vehicle = await _vehicleRepository.GetVehiclesDB().ContinueWith(t => t.Result.FirstOrDefault(v => v.Id == route.VehicleId));
+        if (vehicle != null)
+        {
+            vehicle.Status = "Assigned";
+            await _vehicleRepository.AssignVehicleDB(vehicle);
+        }
+
+        var driver = await _authRepository.GetUserByIdDB(route.DriverId);
+        var driverName = driver?.Name ?? "Unknown";
+        await _logService.LogEventAsync(route.Id, RouteStatusType.RouteStarted,
+            $"Driver {driverName} assigned to route {route.RouteNumber} for {route.StartTime:MMM dd, yyyy} – {route.EndTime:MMM dd, yyyy}");
+
         return new { success = true, message = "Route created successfully", routeId = id };
     }
 
@@ -146,6 +161,15 @@ public class RouteService : IRouteService
                         await _vehicleRepository.AssignVehicleDB(vehicle);
                     }
                 }
+
+                if (dto.Status == RouteStatus.Started || dto.Status == RouteStatus.InProgress)
+                {
+                    await _authRepository.UpdateUserStatusDB(route.DriverId, "OnRoute");
+                }
+                else if (dto.Status == RouteStatus.Completed || dto.Status == RouteStatus.Cancelled)
+                {
+                    await _authRepository.UpdateUserStatusDB(route.DriverId, "Idle");
+                }
             }
 
             return updated == 0
@@ -199,6 +223,41 @@ public class RouteService : IRouteService
     public async Task ReportIssue(int routeId, string description)
     {
         await _logService.LogEventAsync(routeId, RouteStatusType.IssueReported, description);
+    }
+
+    public async Task<(bool Success, object Response)> CompleteRoute(int routeId)
+    {
+        try
+        {
+            var route = await _routeRepository.GetRouteByIdDB(routeId);
+
+            if (route.Status == RouteStatus.Completed)
+                return (false, new { message = "Route is already completed" });
+
+            route.Status = RouteStatus.Completed;
+            var updated = await _routeRepository.UpdateRouteDB(route);
+            if (updated == 0)
+                return (false, new { message = "Failed to complete route" });
+
+            await _authRepository.UpdateUserStatusDB(route.DriverId, "Idle");
+
+            var vehicle = await _vehicleRepository.GetVehiclesDB()
+                .ContinueWith(t => t.Result.FirstOrDefault(v => v.Id == route.VehicleId));
+            if (vehicle != null)
+            {
+                vehicle.Status = "Idle";
+                await _vehicleRepository.AssignVehicleDB(vehicle);
+            }
+
+            await _logService.LogEventAsync(routeId, RouteStatusType.RouteCompleted,
+                $"Route {route.RouteNumber} completed. Driver and vehicle set to Idle.");
+
+            return (true, new { message = "Route completed successfully" });
+        }
+        catch (KeyNotFoundException)
+        {
+            return (false, new { message = "Route not found" });
+        }
     }
 
     public async Task<BulkRouteUploadResponseDTO> BulkUploadRoutes(IFormFile file)
@@ -305,6 +364,14 @@ public class RouteService : IRouteService
 
         if (route.StartTime < DateTime.Now.AddMinutes(-10))
             throw new ArgumentException("Start time cannot be significantly in the past");
+
+        foreach (var stop in route.Stops)
+        {
+            if (stop.ExpectedArrival < route.StartTime)
+                throw new ArgumentException($"Stop '{stop.LocationName}' expected arrival ({stop.ExpectedArrival:g}) cannot be before the route start time ({route.StartTime:g})");
+            if (stop.ExpectedArrival > route.EndTime)
+                throw new ArgumentException($"Stop '{stop.LocationName}' expected arrival ({stop.ExpectedArrival:g}) cannot be after the route end time ({route.EndTime:g})");
+        }
     }
 
     private async Task<string?> CheckConflicts(int driverId, int vehicleId, DateTime startTime, DateTime endTime, int? excludeRouteId = null)

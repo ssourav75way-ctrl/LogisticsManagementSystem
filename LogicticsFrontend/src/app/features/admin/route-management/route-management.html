@@ -27,8 +27,10 @@
         <mat-option value="0">Created</mat-option>
         <mat-option value="1">Assigned</mat-option>
         <mat-option value="2">Started</mat-option>
+        <mat-option value="3">In Progress</mat-option>
         <mat-option value="4">Arrived</mat-option>
         <mat-option value="5">Completed</mat-option>
+        <mat-option value="6">Cancelled</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
@@ -44,12 +46,28 @@
 
       <ng-container matColumnDef="driver">
         <mat-header-cell *matHeaderCellDef> Driver </mat-header-cell>
-        <mat-cell *matCellDef="let route"> {{route.driverName || 'Not Assigned'}} </mat-cell>
+        <mat-cell *matCellDef="let route">
+          <div class="driver-cell">
+            <span>{{route.driverName || 'Not Assigned'}}</span>
+            <span class="drv-badge" [ngClass]="getDriverStatusClass(route.status)" *ngIf="route.driverName">
+              {{getDriverStatusForRoute(route.status)}}
+            </span>
+          </div>
+        </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="vehicle">
         <mat-header-cell *matHeaderCellDef> Vehicle </mat-header-cell>
         <mat-cell *matCellDef="let route"> {{route.vehicleNumber || '-'}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="window">
+        <mat-header-cell *matHeaderCellDef> Delivery Window </mat-header-cell>
+        <mat-cell *matCellDef="let route">
+          <span class="window-text">
+            {{route.startTime | date:'MMM d, h:mm a':'+0530'}} – {{route.endTime | date:'MMM d, h:mm a':'+0530'}}
+          </span>
+        </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="distance">

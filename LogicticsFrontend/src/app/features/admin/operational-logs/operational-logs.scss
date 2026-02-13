@@ -32,7 +32,12 @@
   font-weight: bold;
   
   mat-icon { font-size: 16px; width: 16px; height: 16px; color: #444; }
-  &[data-type="4"] { color: #b71c1c; mat-icon { color: #b71c1c; } }
+  &[data-type="0"] { color: #004085; mat-icon { color: #004085; } }
+  &[data-type="1"] { color: #155724; mat-icon { color: #155724; } }
+  &[data-type="2"] { color: #856404; mat-icon { color: #856404; } }
+  &[data-type="3"] { color: #155724; mat-icon { color: #155724; } }
+  &[data-type="4"] { color: #856404; mat-icon { color: #856404; } }
+  &[data-type="5"] { color: #b71c1c; mat-icon { color: #b71c1c; } }
 }
 
 .issue-row {

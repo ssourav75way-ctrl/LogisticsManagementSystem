@@ -35,8 +35,15 @@ public class RouteController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _routeService.CreateRoute(dto);
-        return Ok(result);
+        try
+        {
+            var result = await _routeService.CreateRoute(dto);
+            return Ok(result);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { success = false, message = ex.Message });
+        }
     }
 
     [HttpPut("{id}")]
@@ -48,8 +55,15 @@ public class RouteController : ControllerBase
         if (id != dto.Id)
             return BadRequest(new { message = "Route ID mismatch" });
 
-        var result = await _routeService.UpdateRoute(dto);
-        return result.Success ? Ok(result) : NotFound(result);
+        try
+        {
+            var result = await _routeService.UpdateRoute(dto);
+            return result.Success ? Ok(result) : NotFound(result);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { success = false, message = ex.Message });
+        }
     }
 
     [HttpDelete("{id}")]
@@ -98,5 +112,12 @@ public class RouteController : ControllerBase
 
         var result = await _routeService.BulkUploadRoutes(file);
         return Ok(result);
+    }
+
+    [HttpPost("{id}/complete")]
+    public async Task<IActionResult> CompleteRoute(int id)
+    {
+        var result = await _routeService.CompleteRoute(id);
+        return result.Success ? Ok(result.Response) : BadRequest(result.Response);
     }
 }

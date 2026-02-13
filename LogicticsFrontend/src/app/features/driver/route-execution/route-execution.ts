@@ -125,6 +125,16 @@ export class RouteExecutionComponent implements OnInit {
     return types[status] || 'Unknown';
   }
 
+  toIST(dateStr: string | Date): string {
+    const d = new Date(dateStr);
+    return d.toLocaleString('en-IN', {
+      timeZone: 'Asia/Kolkata',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    });
+  }
+
   allStopsReached(): boolean {
     return this.route?.stops?.every((s) => s.status === 1) ?? false;
   }
@@ -136,6 +146,20 @@ export class RouteExecutionComponent implements OnInit {
         .subscribe(() => {
           this.snackBar.open('Transit issue reported to dispatcher', 'OK', { duration: 5000 });
         });
+    }
+  }
+
+  completeRoute() {
+    if (this.route) {
+      this.routeService.completeRoute(this.route.id).subscribe({
+        next: () => {
+          this.route!.status = 5;
+          this.snackBar.open('Route completed! Driver and vehicle set to Idle.', 'OK', {
+            duration: 5000,
+          });
+        },
+        error: () => this.snackBar.open('Failed to complete route', 'Close', { duration: 3000 }),
+      });
     }
   }
 }

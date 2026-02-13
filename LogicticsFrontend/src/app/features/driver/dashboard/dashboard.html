@@ -27,14 +27,20 @@
           </div>
           <div class="detail-item">
             <mat-icon>schedule</mat-icon>
-            <span>Starts: {{route.startTime | date:'MMM d, h:mm a':'+0530'}}</span>
+            <span>{{toIST(route.startTime)}} – {{toIST(route.endTime)}}</span>
           </div>
         </div>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-flat-button color="primary" [routerLink]="['/driver/execution', route.id]" class="full-width-btn">
-          {{ route.status === 2 ? 'CONTINUE EXECUTION' : 'OPEN ROUTE' }}
-        </button>
+        <div class="action-row">
+          <button mat-flat-button color="primary" [routerLink]="['/driver/execution', route.id]" class="action-btn">
+            {{ route.status >= 2 && route.status <= 4 ? 'CONTINUE EXECUTION' : 'OPEN ROUTE' }}
+          </button>
+          <button mat-stroked-button color="warn" class="action-btn complete-btn" (click)="completeRoute(route)"
+            *ngIf="route.status >= 2 && route.status <= 4">
+            <mat-icon>done_all</mat-icon> COMPLETE JOURNEY
+          </button>
+        </div>
       </mat-card-actions>
     </mat-card>
   </div>

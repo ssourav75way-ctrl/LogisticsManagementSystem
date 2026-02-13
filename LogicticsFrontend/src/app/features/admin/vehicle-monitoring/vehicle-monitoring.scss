@@ -57,6 +57,7 @@
   
   &[data-status="In Transit"] { background: #d1ecf1; color: #0c5460; }
   &[data-status="Idle"] { background: #d4edda; color: #155724; }
+  &[data-status="Assigned"] { background: #fff3cd; color: #856404; }
   &[data-status="Maintenance"] { background: #f8d7da; color: #721c24; }
 }
 
