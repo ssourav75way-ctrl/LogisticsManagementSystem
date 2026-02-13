@@ -226,3 +226,4 @@
 /Users/75way-mac33/Downloads/angularAsses/LogisticsBackend/LogisticsBackend/obj/Debug/net8.0/LogisticsBackend.pdb
 /Users/75way-mac33/Downloads/angularAsses/LogisticsBackend/LogisticsBackend/obj/Debug/net8.0/LogisticsBackend.genruntimeconfig.cache
 /Users/75way-mac33/Downloads/angularAsses/LogisticsBackend/LogisticsBackend/obj/Debug/net8.0/ref/LogisticsBackend.dll
+/Users/75way-mac33/Downloads/angularAsses/LogisticsBackend/LogisticsBackend/obj/Debug/net8.0/LogisticsBackend.sourcelink.json

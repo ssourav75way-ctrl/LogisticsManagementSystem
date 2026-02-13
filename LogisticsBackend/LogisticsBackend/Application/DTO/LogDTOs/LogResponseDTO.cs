@@ -8,7 +8,7 @@ public class LogResponseDTO
     public int RouteId { get; set; }
     public string RouteNumber { get; set; } = string.Empty;
     public int VehicleId { get; set; }
-    public string VehicleNumber { get; set; } = string.Empty;
+   
     public int DriverId { get; set; }
     public string DriverName { get; set; } = string.Empty;
     public RouteStatusType EventType { get; set; }

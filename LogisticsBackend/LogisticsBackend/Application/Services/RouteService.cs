@@ -131,6 +131,21 @@ public class RouteService : IRouteService
                 };
 
                 await _logService.LogEventAsync(dto.Id, eventType, $"Route status changed from {oldStatus} to {dto.Status}");
+
+                var vehicle = await _vehicleRepository.GetVehiclesDB().ContinueWith(t => t.Result.FirstOrDefault(v => v.Id == route.VehicleId));
+                if (vehicle != null)
+                {
+                    if (dto.Status == RouteStatus.Started || dto.Status == RouteStatus.InProgress)
+                    {
+                        vehicle.Status = "In Transit";
+                        await _vehicleRepository.AssignVehicleDB(vehicle);
+                    }
+                    else if (dto.Status == RouteStatus.Completed || dto.Status == RouteStatus.Cancelled)
+                    {
+                        vehicle.Status = "Idle";
+                        await _vehicleRepository.AssignVehicleDB(vehicle);
+                    }
+                }
             }
 
             return updated == 0

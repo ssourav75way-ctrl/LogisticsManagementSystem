@@ -17,6 +17,7 @@ public class User:BaseEntity
     public string Password { get; set; } = string.Empty;
     [Required]
     public string Role { get; set; } = string.Empty;
+   
     public ICollection<Route>? AssignedRoutes { get; set; }
 
 }

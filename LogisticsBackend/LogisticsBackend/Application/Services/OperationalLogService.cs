@@ -48,9 +48,9 @@ public class OperationalLogService : IOperationalLogService
             RouteId = log.RouteId,
             RouteNumber = route.RouteNumber,
             VehicleId = log.VehicleId,
-            VehicleNumber = route.Vehicle?.Name ?? "Unknown",
+         
             DriverId = log.DriverId,
-            DriverName = route.Driver?.Name ?? "Unknown",
+            DriverName = route.Driver.Name,
             EventType = log.EventType,
             Description = log.Description,
             EventTime = log.EventTime
@@ -88,7 +88,6 @@ public class OperationalLogService : IOperationalLogService
                 RouteId = l.RouteId,
                 RouteNumber = l.Route.RouteNumber,
                 VehicleId = l.VehicleId,
-                VehicleNumber = l.Vehicle.Name,
                 DriverId = l.DriverId,
                 DriverName = l.Driver.Name,
                 EventType = l.EventType,
