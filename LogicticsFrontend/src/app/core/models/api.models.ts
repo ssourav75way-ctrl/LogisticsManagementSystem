@@ -39,7 +39,6 @@ export interface CreateVehicleRequest {
   vehicleType: string;
   status: string;
   location: string;
-  isActive: string;
 }
 
 export interface UpdateVehicleStatusRequest {

@@ -67,8 +67,6 @@ export class VehicleMonitoringComponent implements OnInit {
         return 'status-idle';
       case 'Maintenance':
         return 'status-maintenance';
-      case 'Assigned':
-        return 'status-assigned';
       default:
         return '';
     }
@@ -83,8 +81,7 @@ export class VehicleMonitoringComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) this.loadVehicles();
     });
-    }
-  
+  }
 
   openCreateDialog() {
     const dialogRef = this.dialog.open(CreateVehicleDialog, {

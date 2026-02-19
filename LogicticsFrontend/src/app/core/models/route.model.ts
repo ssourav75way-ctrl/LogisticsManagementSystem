@@ -14,15 +14,5 @@ export interface Route {
   endTime: string;
   notes?: string;
   stops?: Stop[];
-  driver?: {
-    id: number;
-    name: string;
-    email: string;
-  };
-  vehicle?: {
-    id: number;
-    name: string;
-    vehicleType: string;
-    status: string;
-  };
+  stopsCount?: number;
 }

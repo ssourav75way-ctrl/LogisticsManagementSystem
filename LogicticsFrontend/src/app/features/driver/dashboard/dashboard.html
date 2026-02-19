@@ -1,7 +1,9 @@
 <div class="page-container">
   <div class="header-row">
     <h1>Assigned Routes</h1>
-    <button mat-stroked-button color="primary" class="small-btn" (click)="ngOnInit()">REFRESH</button>
+    <button mat-stroked-button color="primary" class="small-btn" (click)="ngOnInit()">
+      REFRESH
+    </button>
   </div>
 
   <div class="route-grid" *ngIf="assignedRoutes.length > 0; else noRoutes">
@@ -9,9 +11,9 @@
       <div class="card-edge" [attr.data-status]="route.status"></div>
       <mat-card-header>
         <div class="header-main">
-          <mat-card-title>{{route.routeNumber}}</mat-card-title>
+          <mat-card-title>{{ route.routeNumber }}</mat-card-title>
           <span class="status-chip" [attr.data-status]="route.status">
-            {{getStatusLabel(route.status)}}
+            {{ getStatusLabel(route.status) }}
           </span>
         </div>
       </mat-card-header>
@@ -19,25 +21,35 @@
         <div class="route-details">
           <div class="detail-item">
             <mat-icon>local_shipping</mat-icon>
-            <span>{{route.vehicle?.name || 'N/A'}}</span>
+            <span>{{ route.vehicleNumber || 'N/A' }}</span>
           </div>
           <div class="detail-item">
             <mat-icon>location_on</mat-icon>
-            <span>{{route.stops?.length || 0}} Delivery Points</span>
+            <span>{{ route.stops?.length || 0 }} Delivery Points</span>
           </div>
           <div class="detail-item">
             <mat-icon>schedule</mat-icon>
-            <span>{{toIST(route.startTime)}} – {{toIST(route.endTime)}}</span>
+            <span>{{ toIST(route.startTime) }} – {{ toIST(route.endTime) }}</span>
           </div>
         </div>
       </mat-card-content>
       <mat-card-actions>
         <div class="action-row">
-          <button mat-flat-button color="primary" [routerLink]="['/driver/execution', route.id]" class="action-btn">
+          <button
+            mat-flat-button
+            color="primary"
+            [routerLink]="['/driver/execution', route.id]"
+            class="action-btn"
+          >
             {{ route.status >= 2 && route.status <= 4 ? 'CONTINUE EXECUTION' : 'OPEN ROUTE' }}
           </button>
-          <button mat-stroked-button color="warn" class="action-btn complete-btn" (click)="completeRoute(route)"
-            *ngIf="route.status >= 2 && route.status <= 4">
+          <button
+            mat-stroked-button
+            color="warn"
+            class="action-btn complete-btn"
+            (click)="completeRoute(route)"
+            *ngIf="route.status >= 2 && route.status <= 4"
+          >
             <mat-icon>done_all</mat-icon> COMPLETE JOURNEY
           </button>
         </div>

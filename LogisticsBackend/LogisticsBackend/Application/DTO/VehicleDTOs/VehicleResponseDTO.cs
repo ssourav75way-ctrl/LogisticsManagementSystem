@@ -1,5 +1,3 @@
-using LogisticsBackend.Application.DTO.RouteDTO_s;
-
 namespace LogisticsBackend.Application.DTO.VehicleDTOs;
 
 public class VehicleResponseDTO

@@ -133,41 +133,10 @@ export class OperationalLogsComponent implements OnInit, OnDestroy {
   }
 
   getVehicleName(log: OperationalLog): string {
-    if (log.vehicleNumber) return log.vehicleNumber;
-    if (log.vehicle?.name) return log.vehicle.name;
-    if (log.vehicle?.name) return log.vehicle.name;
-
     if (log.vehicleId) {
       const vehicle = this.vehicles.find((v) => v.id === log.vehicleId);
       if (vehicle) return vehicle.name;
     }
-
     return '-';
-  }
-
-  exportToCsv() {
-    if (this.logs.length === 0) return;
-
-    const headers = ['Time', 'Event', 'Description', 'Driver', 'Vehicle', 'Route #'];
-    const csvData = this.logs.map((log) => [
-      new Date(log.eventTime).toLocaleString(),
-      this.getEventTypeLabel(log.eventType),
-      `"${log.description || ''}"`,
-      log.driverName || 'System',
-      this.getVehicleName(log),
-      log.routeNumber || '-',
-    ]);
-
-    const csvContent = [headers.join(','), ...csvData.map((row) => row.join(','))].join('\n');
-
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    link.setAttribute('download', `operational_logs_${new Date().toISOString().split('T')[0]}.csv`);
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
   }
 }

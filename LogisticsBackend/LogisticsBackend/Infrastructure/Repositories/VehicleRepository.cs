@@ -17,6 +17,7 @@ public class VehicleRepository:IVehicleRepository
         public async Task<ICollection<Vehicle>>  GetVehiclesDB()
         {
             return await _dbContext.Vehicles
+                .Include(v => v.Routes)
                 .AsNoTracking()
                 .ToListAsync();
         }

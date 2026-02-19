@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LogisticsBackend.Domain.Entities;
 
@@ -19,6 +20,7 @@ public class Vehicle :BaseEntity
 
     [Required] 
     public string IsActive { get; set; } = string.Empty;
+  
     public ICollection<Route>? Routes { get; set; }
 
 }

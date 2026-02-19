@@ -4,10 +4,6 @@ export interface Vehicle {
   vehicleType: string;
   status: string;
   location: string;
-  isActive: string;
-  routes?: {
-    id: number;
-    routeNumber: string;
-    status: number;
-  }[];
+  activeRouteId?: number;
+  activeRouteNumber?: string;
 }

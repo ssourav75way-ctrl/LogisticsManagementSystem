@@ -4,8 +4,8 @@ using LogisticsBackend.Application.Interfaces.Services;
 using LogisticsBackend.Domain.Entities;
 using LogisticsBackend.Domain.Enums;
 using MiniExcelLibs;
-using Microsoft.AspNetCore.Http;
 using Route = LogisticsBackend.Domain.Entities.Route;
+
 
 namespace LogisticsBackend.Application.Services;
 
@@ -16,7 +16,7 @@ public class RouteService : IRouteService
     private readonly IVehicleRepository _vehicleRepository;
 
     private readonly IOperationalLogService _logService;
-
+   
     public RouteService(
         IRouteRepository routeRepository,
         IAuthRepository authRepository,
@@ -32,9 +32,10 @@ public class RouteService : IRouteService
     public async Task<List<RouteResponseDTO>> GetAllRoutesDTO()
     {
         var routes = await _routeRepository.GetAllRoutesDB();
+      
         return routes.Select(MapToDTO).ToList();
     }
-
+    
     public async Task<RouteResponseDTO?> GetRouteById(int id)
     {
         try 
@@ -83,7 +84,7 @@ public class RouteService : IRouteService
         var vehicle = await _vehicleRepository.GetVehiclesDB().ContinueWith(t => t.Result.FirstOrDefault(v => v.Id == route.VehicleId));
         if (vehicle != null)
         {
-            vehicle.Status = "Assigned";
+            vehicle.Status = "In Transit";
             await _vehicleRepository.AssignVehicleDB(vehicle);
         }
 
@@ -120,7 +121,6 @@ public class RouteService : IRouteService
                 Notes = s.Notes
             }).ToList()
         };
-
         ValidateRoute(route);
         
         var conflict = await CheckConflicts(route.DriverId, route.VehicleId, route.StartTime, route.EndTime, route.Id);
@@ -144,13 +144,14 @@ public class RouteService : IRouteService
                     RouteStatus.Cancelled => RouteStatusType.RouteCancelled,
                     _ => RouteStatusType.RouteStarted
                 };
+                
 
                 await _logService.LogEventAsync(dto.Id, eventType, $"Route status changed from {oldStatus} to {dto.Status}");
 
                 var vehicle = await _vehicleRepository.GetVehiclesDB().ContinueWith(t => t.Result.FirstOrDefault(v => v.Id == route.VehicleId));
                 if (vehicle != null)
                 {
-                    if (dto.Status == RouteStatus.Started || dto.Status == RouteStatus.InProgress)
+                    if (dto.Status == RouteStatus.Created || dto.Status == RouteStatus.Assigned || dto.Status == RouteStatus.Started || dto.Status == RouteStatus.InProgress)
                     {
                         vehicle.Status = "In Transit";
                         await _vehicleRepository.AssignVehicleDB(vehicle);
@@ -380,7 +381,7 @@ public class RouteService : IRouteService
         
         var driverConflict = routes.FirstOrDefault(r => 
             r.DriverId == driverId && 
-            r.Id != excludeRouteId &&
+            r.Id != excludeRouteId && 
             r.Status != RouteStatus.Completed && r.Status != RouteStatus.Cancelled &&
             startTime < r.EndTime && r.StartTime < endTime);
 

@@ -77,7 +77,6 @@ export class RouteService {
 
   createRoute(route: CreateRouteRequest): Observable<unknown> {
     const dataroute = this.http.post(this.apiUrl, route);
-    console.log(dataroute);
     return dataroute;
   }
 

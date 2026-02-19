@@ -76,7 +76,7 @@ public class OperationalLogService : IOperationalLogService
         
         if (driverId.HasValue)
             query = query.Where(l => l.DriverId == driverId.Value);
-            
+                
         if (routeId.HasValue)
             query = query.Where(l => l.RouteId == routeId.Value);
 
